@@ -7,6 +7,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { LunchController } from './lunch/lunch.controller';
 import { LunchService } from './lunch/lunch.service';
 import { UserModule } from './user/user.module';
+import { LunchModule } from './lunch/lunch.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { UserModule } from './user/user.module';
       entities: [],
       synchronize: true,
     }),
+    LunchModule,
     UserModule,
   ],
   controllers: [AppController, LunchController],

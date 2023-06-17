@@ -8,6 +8,7 @@ import { LunchController } from './lunch/lunch.controller';
 import { LunchService } from './lunch/lunch.service';
 import { UserModule } from './user/user.module';
 import { LunchModule } from './lunch/lunch.module';
+import { VoteModule } from './vote/vote.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { LunchModule } from './lunch/lunch.module';
     }),
     LunchModule,
     UserModule,
+    VoteModule,
   ],
   controllers: [AppController, LunchController],
   providers: [AppService, LunchService],

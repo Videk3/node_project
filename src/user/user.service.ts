@@ -1,26 +1,56 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { User } from '../entities/user.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { DeleteResult, Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService {
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  constructor(
+    @InjectRepository(User) private readonly userRepository: Repository<User>,
+  ) {}
+
+  async findAll(): Promise<User[]> {
+    return this.userRepository.find();
   }
 
-  findAll() {
-    return `This action returns all user`;
+  async create(createUserDto: CreateUserDto): Promise<User> {
+    const user = this.findByEmail(createUserDto.email);
+    if (user) {
+      throw new BadRequestException('Email že obstaja');
+    }
+    const hashed = await bcrypt.hash(createUserDto.password, 10);
+    const data = { ...createUserDto, password: hashed };
+
+    try {
+      const newUser: User = this.userRepository.create(data);
+      return this.userRepository.save(newUser);
+    } catch (e) {
+      console.log(e);
+      throw new BadRequestException('Napaka pri shranjevanju');
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async delete(id: number): Promise<DeleteResult> {
+    return this.userRepository.delete(id);
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async findById(id: number): Promise<User> {
+    return this.userRepository.findOneBy({ id });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async findByEmail(email: string): Promise<User> {
+    return this.userRepository.findOneBy({ email });
+  }
+
+  async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
+    try {
+      await this.userRepository.update(id, updateUserDto);
+      return this.findById(id);
+    } catch (e) {
+      throw new BadRequestException('Napaka pri posodabljanju');
+    }
   }
 }

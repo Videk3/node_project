@@ -17,7 +17,7 @@ export class UserService {
   }
 
   async create(createUserDto: CreateUserDto): Promise<User> {
-    const user = this.findByEmail(createUserDto.email);
+    const user = await this.findByEmail(createUserDto.email);
     if (user) {
       throw new BadRequestException('Email že obstaja');
     }
@@ -34,21 +34,21 @@ export class UserService {
   }
 
   async delete(id: number): Promise<DeleteResult> {
-    return this.userRepository.delete(id);
+    return await this.userRepository.delete(id);
   }
 
   async findById(id: number): Promise<User> {
-    return this.userRepository.findOneBy({ id });
+    return await this.userRepository.findOneBy({ id });
   }
 
   async findByEmail(email: string): Promise<User> {
-    return this.userRepository.findOneBy({ email });
+    return await this.userRepository.findOneBy({ email });
   }
 
   async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
     try {
       await this.userRepository.update(id, updateUserDto);
-      return this.findById(id);
+      return await this.findById(id);
     } catch (e) {
       throw new BadRequestException('Napaka pri posodabljanju');
     }

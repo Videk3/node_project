@@ -8,6 +8,9 @@ export class Lunch {
   @Column()
   name: string;
 
+  @Column({ default: 0 })
+  score: number;
+
   @OneToMany(() => Vote, (vote: Vote) => vote.lunch)
   votes: Vote[];
 }

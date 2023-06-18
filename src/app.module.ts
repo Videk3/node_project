@@ -4,33 +4,25 @@ import { AppService } from './app.service';
 import process from 'process';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { LunchController } from './lunch/lunch.controller';
-import { LunchService } from './lunch/lunch.service';
 import { UserModule } from './user/user.module';
 import { LunchModule } from './lunch/lunch.module';
 import { VoteModule } from './vote/vote.module';
+import { DatabaseModule } from './database/database.module';
+import { configValidationSchema } from './config/schema.config';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
+      envFilePath: [`.env`],
+      validationSchema: configValidationSchema,
     }),
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: process.env.DATABASE_HOST,
-      port: parseInt(process.env.DATABASE_PORT),
-      username: process.env.DATABASE_USERNAME,
-      password: process.env.DATABASE_PASSWORD,
-      database: process.env.DATABASE_NAME,
-      autoLoadEntities: true,
-      entities: [],
-      synchronize: true,
-    }),
+    DatabaseModule,
     LunchModule,
     UserModule,
     VoteModule,
   ],
-  controllers: [AppController, LunchController],
-  providers: [AppService, LunchService],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}

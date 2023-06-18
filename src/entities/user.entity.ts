@@ -2,8 +2,10 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { Vote } from './vote.entity';
 
 @Entity('users')
 export class User {
@@ -24,4 +26,7 @@ export class User {
 
   @CreateDateColumn()
   created_at: Date;
+
+  @OneToMany(() => Vote, (vote: Vote) => vote.user)
+  votes: Vote[];
 }

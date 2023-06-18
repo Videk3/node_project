@@ -1,1 +1,16 @@
-export class Vote {}
+import { Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { User } from './user.entity';
+import { Lunch } from './lunch.entity';
+@Entity('lunch')
+export class Vote {
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @ManyToOne(() => User, (user: User) => user.votes)
+  @JoinColumn({ name: 'user_id' })
+  user: User;
+
+  @ManyToOne(() => Lunch, (lunch: Lunch) => lunch.votes)
+  @JoinColumn({ name: 'lunch_id' })
+  lunch: Lunch;
+}

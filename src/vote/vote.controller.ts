@@ -16,8 +16,8 @@ export class VoteController {
   constructor(private readonly voteService: VoteService) {}
 
   @Post()
-  create(@Body() createVoteDto: CreateVoteDto) {
-    return this.voteService.create(createVoteDto);
+  upvote(@Body() createVoteDto: CreateVoteDto) {
+    return this.voteService.upvote(createVoteDto);
   }
 
   @Get()

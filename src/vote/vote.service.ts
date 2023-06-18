@@ -4,8 +4,8 @@ import { UpdateVoteDto } from './dto/update-vote.dto';
 
 @Injectable()
 export class VoteService {
-  create(createVoteDto: CreateVoteDto) {
-    return 'This action adds a new vote';
+  upvote(createVoteDto: CreateVoteDto) {
+    return this;
   }
 
   findAll() {

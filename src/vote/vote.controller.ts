@@ -10,23 +10,25 @@ import {
 import { VoteService } from './vote.service';
 import { CreateVoteDto } from './dto/create-vote.dto';
 import { UpdateVoteDto } from './dto/update-vote.dto';
+import { DeleteResult } from 'typeorm';
+import { Vote } from '../entities/vote.entity';
 
 @Controller('vote')
 export class VoteController {
   constructor(private readonly voteService: VoteService) {}
 
   @Post()
-  upvote(@Body() createVoteDto: CreateVoteDto) {
-    return this.voteService.upvote(createVoteDto);
+  create(@Body() createVoteDto: CreateVoteDto): Promise<Vote> {
+    return this.voteService.create(createVoteDto);
   }
 
   @Get()
-  findAll() {
+  findAll(): Promise<Vote[]> {
     return this.voteService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id') id: string): Promise<Vote> {
     return this.voteService.findOne(+id);
   }
 
@@ -36,7 +38,7 @@ export class VoteController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@Param('id') id: string): Promise<DeleteResult> {
     return this.voteService.remove(+id);
   }
 }

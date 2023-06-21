@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { CreateVoteDto } from './dto/create-vote.dto';
 import { UpdateVoteDto } from './dto/update-vote.dto';
 import { Vote } from '../entities/vote.entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -11,12 +10,12 @@ export class VoteService {
     @InjectRepository(Vote) private voteRepository: Repository<Vote>,
   ) {}
 
-  async create(createVoteDto: CreateVoteDto): Promise<Vote> {
-    const vote: Vote = this.voteRepository.create({
-      lunch: { id: createVoteDto.lunch_id },
-      user: { id: createVoteDto.user_id },
-    });
-    return await this.voteRepository.save(vote);
+  async create(user_id: number, lunch_id: number): Promise<Vote> {
+    const data = {
+      lunch: { id: lunch_id },
+      user: { id: user_id },
+    };
+    return await this.voteRepository.save(data);
   }
 
   async findAll(): Promise<Vote[]> {

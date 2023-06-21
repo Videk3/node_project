@@ -10,8 +10,8 @@ export class AuthController {
 
   @UseGuards(LocalAuthGuard)
   @Post('login')
-  signIn(@Request() req, @Res() res: Response) {
-    const jwt = req.user;
+  async signIn(@Request() req, @Res() res: Response) {
+    const jwt = await this.authService.signIn(req.user);
     res.setHeader('Set-Cookie', [jwt]).json();
   }
 
@@ -20,7 +20,6 @@ export class AuthController {
   profile(@Request() req) {
     return req.user;
   }
-
   @Post('logout')
   logout(@Request() req) {
     req.res.setHeader(

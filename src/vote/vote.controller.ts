@@ -6,21 +6,30 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
+  Request,
 } from '@nestjs/common';
 import { VoteService } from './vote.service';
-import { CreateVoteDto } from './dto/create-vote.dto';
 import { UpdateVoteDto } from './dto/update-vote.dto';
 import { DeleteResult } from 'typeorm';
 import { Vote } from '../entities/vote.entity';
+import { JwtAuthGuard } from '../auth/guards/jwtAuth.guard';
 
 @Controller('vote')
 export class VoteController {
   constructor(private readonly voteService: VoteService) {}
 
-  @Post()
-  create(@Body() createVoteDto: CreateVoteDto): Promise<Vote> {
-    return this.voteService.create(createVoteDto);
+  @Post('upvote/:id')
+  @UseGuards(JwtAuthGuard)
+  create(@Param('id') lunch_id: number, @Request() req) {
+    return this.voteService.create(req.user.id, lunch_id);
   }
+
+  /*@UseGuards(JwtAuthGuard)
+  @Post()
+  create(@Body() lunch_id: number, @Request() req): Promise<Vote> {
+    return this.voteService.create({ lunch_id, user_id: req.user.id });
+  }*/
 
   @Get()
   findAll(): Promise<Vote[]> {

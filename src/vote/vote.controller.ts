@@ -25,11 +25,10 @@ export class VoteController {
     return this.voteService.create(req.user.id, lunch_id);
   }
 
-  /*@UseGuards(JwtAuthGuard)
-  @Post()
-  create(@Body() lunch_id: number, @Request() req): Promise<Vote> {
-    return this.voteService.create({ lunch_id, user_id: req.user.id });
-  }*/
+  @Get('mostvotedtoday')
+  findMostVoted(): Promise<Vote[]> {
+    return this.voteService.findMostVoted();
+  }
 
   @Get()
   findAll(): Promise<Vote[]> {

@@ -33,4 +33,16 @@ export class VoteService {
   async remove(id: number) {
     return this.voteRepository.delete(id);
   }
+
+  //return count of all votes for each lunch
+  async findMostVoted(): Promise<Vote[]> {
+    return await this.voteRepository
+      .createQueryBuilder('vote')
+      .select('vote.lunch_id, COUNT(vote.lunch_id)', 'count')
+      .where('vote.created_at >= DATE(NOW())')
+      .groupBy('vote.lunch_id')
+      .orderBy('count', 'DESC')
+      .limit(1)
+      .getRawMany();
+  }
 }

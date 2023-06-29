@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { UpdateVoteDto } from './dto/update-vote.dto';
 import { Vote } from '../entities/vote.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -26,16 +25,11 @@ export class VoteService {
     return await this.voteRepository.findOneBy({ id });
   }
 
-  async update(id: number, updateVoteDto: UpdateVoteDto) {
-    return `This action updates a #${id} vote`;
-  }
-
   async remove(id: number) {
     return this.voteRepository.delete(id);
   }
 
-  //return count of all votes for each lunch
-  async findMostVoted(): Promise<Vote[]> {
+  async findMostVoted(): Promise<Vote> {
     return await this.voteRepository
       .createQueryBuilder('vote')
       .select('vote.lunch_id, COUNT(vote.lunch_id)', 'count')
@@ -43,6 +37,6 @@ export class VoteService {
       .groupBy('vote.lunch_id')
       .orderBy('count', 'DESC')
       .limit(1)
-      .getRawMany();
+      .getRawOne();
   }
 }

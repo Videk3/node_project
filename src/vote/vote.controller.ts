@@ -1,13 +1,13 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
-  UseGuards,
+  Get,
+  Param,
+  Patch,
+  Post,
   Request,
+  UseGuards,
 } from '@nestjs/common';
 import { VoteService } from './vote.service';
 import { UpdateVoteDto } from './dto/update-vote.dto';
@@ -26,7 +26,7 @@ export class VoteController {
   }
 
   @Get('mostvotedtoday')
-  findMostVoted(): Promise<Vote[]> {
+  findMostVoted(): Promise<Vote> {
     return this.voteService.findMostVoted();
   }
 

@@ -1,16 +1,13 @@
 import {
-  Body,
   Controller,
   Delete,
   Get,
   Param,
-  Patch,
   Post,
   Request,
   UseGuards,
 } from '@nestjs/common';
 import { VoteService } from './vote.service';
-import { UpdateVoteDto } from './dto/update-vote.dto';
 import { DeleteResult } from 'typeorm';
 import { Vote } from '../entities/vote.entity';
 import { JwtAuthGuard } from '../auth/guards/jwtAuth.guard';
@@ -38,11 +35,6 @@ export class VoteController {
   @Get(':id')
   findOne(@Param('id') id: string): Promise<Vote> {
     return this.voteService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateVoteDto: UpdateVoteDto) {
-    return this.voteService.update(+id, updateVoteDto);
   }
 
   @Delete(':id')

@@ -8,6 +8,6 @@ export class Lunch {
   @Column()
   name: string;
 
-  @OneToMany(() => Vote, (vote: Vote) => vote.lunch)
+  @OneToMany(() => Vote, (vote: Vote) => vote.lunch, { onDelete: 'CASCADE' })
   votes: Vote[];
 }

@@ -12,11 +12,13 @@ export class Vote {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => Lunch, (lunch: Lunch) => lunch.votes)
+  @ManyToOne(() => Lunch, (lunch: Lunch) => lunch.votes, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'lunch_id' })
   lunch: Lunch;
 
-  @ManyToOne(() => User, (user: User) => user.votes)
+  @ManyToOne(() => User, (user: User) => user.votes, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'user_id' })
   user: User;
 
